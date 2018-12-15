@@ -8,14 +8,13 @@
 // Needed for redux-saga es6 generator support
 import '@babel/polyfill';
 
-// Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FontFaceObserver from 'fontfaceobserver';
 import 'sanitize.css/sanitize.css';
+//import Thumbnail from './containers/Thumbnail';
 
-// Import root app
-import Game from 'game/Game';
+import App from './containers/App';
 
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
@@ -29,7 +28,7 @@ openSansObserver.load().then(() => {
 const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
-  ReactDOM.render(<Game />, MOUNT_NODE);
+  ReactDOM.render(<App />, MOUNT_NODE);
 };
 
 render();
