@@ -33,6 +33,7 @@ export default class ModelRenderer {
         Object.keys(this.models).forEach(model => {
             this.models[model].type.use(this.shader);
             this.models[model].instances.forEach(instance => {
+                this.shader.enableTransformationMatrix(instance.getTransformationMatrix());
                 GLC.drawTriangles(this.models[model].type.indices.length);
             })
         })
