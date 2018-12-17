@@ -20,7 +20,11 @@ export default class ModelShader {
         GLC.linkProgram(program);
 
         this.positionAttribute = GLC.getAttribLocation(program, Locations.POSITION);
+        this.normalAttribute = GLC.getAttribLocation(program, Locations.NORMAL);
         this.transformationMatrix = GLC.getUniformLocation(program, 'transformationMatrix');
+        this.lightPosition = GLC.getUniformLocation(program, 'lightPosition');
+        this.lightColor = GLC.getUniformLocation(program, 'lightColor');
+        this.lightAmbient = GLC.getUniformLocation(program, 'lightAmbient');
         this.program = program;
     }
 
@@ -33,7 +37,18 @@ export default class ModelShader {
         GLC.pointToAttribute(this.positionAttribute, 3);
     }
 
+    enableNormals = () => {
+        GLC.enableVertexAttribArray(this.normalAttribute);
+        GLC.pointToAttribute(this.normalAttribute, 3);
+    }
+
     enableTransformationMatrix = (matrix) => {
         GLC.uploadMatrix4fv(this.transformationMatrix, matrix);
+    }
+
+    enableLight = (light) => {
+        GLC.uploadVec3f(this.lightPosition, light.getPosition());
+        GLC.uploadVec3f(this.lightColor, light.getColor());
+        GLC.uploadFloat(this.lightAmbient, light.getAmbient());
     }
 }

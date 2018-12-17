@@ -2,6 +2,8 @@ import GLC from '../GLCommander';
 import ModelRenderer from '../Render/ModelRenderer';
 import ModelType from '../Models/ModelType';
 import ModelInstance from '../Models/ModelInstance';
+import Cube from './cube';
+import Light from '../LightSource';
 
 export default (id) => {
     const canvas = document.querySelector(`#${id}`);
@@ -18,23 +20,22 @@ export default (id) => {
 
     GLC.init(gl);
 
-    const vertices = [
-        0.0, 0.5, 0.0,
-        -0.5, -0.5, 0.0,
-        0.5, -0.5, 0.0
-    ];
+    const vertices = Cube.vertices;
 
-    const indices = [0,1,2];
+    const indices = Cube.indices;
+
+    const normals = Cube.normals;
 
     const modelRender = new ModelRenderer();
-    modelRender.registerNewModel(new ModelType(vertices, indices), 'triangle');
-    const instance = new ModelInstance(0, 0, 0, 0, 0, 0, 1.0);
-    modelRender.addInstance(instance, 'triangle');
+    const light = new Light(100, 100, -100, 1.0, 1.0, 1.0, 0.4);
+    modelRender.registerNewModel(new ModelType(vertices, indices, normals), 'cube');
+    const instance = new ModelInstance(0, 0, 0, 0, 0, 0, 0.5);
+    modelRender.addInstance(instance, 'cube');
 
     const render = () => {
         GLC.clear(1.0, 1.0, 1.0, 1.0);
         instance.updateRotation(1, 1, 1);
-        modelRender.render();
+        modelRender.render(light);
         window.requestAnimationFrame(render);
     }
 
