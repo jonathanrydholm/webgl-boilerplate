@@ -9,10 +9,12 @@ export default class ModelShader {
         const vertexShader = GLC.createVertexShader();
         GLC.addShaderSource(vertexShader, VertexSource);
         GLC.compileShader(vertexShader);
+        this.compileStatus(vertexShader);
 
         const fragmentShader = GLC.createFragmentShader();
         GLC.addShaderSource(fragmentShader, FragmentSource);
         GLC.compileShader(fragmentShader);
+        this.compileStatus(fragmentShader);
 
         const program = GLC.createShaderProgram();
         GLC.attachShaderToProgram(program, vertexShader);
@@ -20,12 +22,21 @@ export default class ModelShader {
         GLC.linkProgram(program);
 
         this.positionAttribute = GLC.getAttribLocation(program, Locations.POSITION);
+        this.textureCoordsAttribute = GLC.getAttribLocation(program, Locations.TEXTURE_COORDS);
         this.normalAttribute = GLC.getAttribLocation(program, Locations.NORMAL);
-        this.transformationMatrix = GLC.getUniformLocation(program, 'transformationMatrix');
-        this.lightPosition = GLC.getUniformLocation(program, 'lightPosition');
-        this.lightColor = GLC.getUniformLocation(program, 'lightColor');
-        this.lightAmbient = GLC.getUniformLocation(program, 'lightAmbient');
+        this.transformationMatrix = GLC.getUniformLocation(program, Locations.TRANSFORMATION_MATRIX);
+        this.lightPosition = GLC.getUniformLocation(program, Locations.LIGHT_POSITION);
+        this.lightColor = GLC.getUniformLocation(program, Locations.LIGHT_COLOR);
+        this.lightAmbient = GLC.getUniformLocation(program, Locations.LIGHT_AMBIENT);
+        this.diffuseTexture = GLC.getUniformLocation(program, Locations.DIFFUSE_TEXTURE);
+        this.hasDiffuseTexture = GLC.getUniformLocation(program, Locations.HAS_DIFFUSE_TEXTURE);
         this.program = program;
+    }
+
+    compileStatus = (shader) => {
+        if(!GLC.gl.getShaderParameter(shader, GLC.gl.COMPILE_STATUS)) {
+            console.error(GLC.gl.getShaderInfoLog(shader));
+        }
     }
 
     use = () => {
@@ -35,6 +46,11 @@ export default class ModelShader {
     enablePosition = () => {
         GLC.enableVertexAttribArray(this.positionAttribute);
         GLC.pointToAttribute(this.positionAttribute, 3);
+    }
+
+    enableTextureCoords = () => {
+        GLC.enableVertexAttribArray(this.textureCoordsAttribute);
+        GLC.pointToAttribute(this.textureCoordsAttribute, 2);
     }
 
     enableNormals = () => {

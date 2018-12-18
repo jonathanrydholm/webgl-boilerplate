@@ -47,7 +47,21 @@ class GLCommander {
     getUniformLocation = (program, uniform) => this.gl.getUniformLocation(program, uniform); 
 
     uploadVec3f = (location, vec3) => this.gl.uniform3fv(location, vec3);
-    uploadFloat = (location, value) => this.gl.uniform1f(location, value); 
+    uploadFloat = (location, value) => this.gl.uniform1f(location, value);
+    uploadInt = (location, value) => this.gl.uniform1i(location, value);
+    uploadBool = (location, value) => this.gl.uniform1i(location, value ? 1: 0);
+
+    createTexture = () => this.gl.createTexture();
+    bindTexture = (texture) => this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+    activeTexture = (texture) => this.gl.activeTexture(this.gl.TEXTURE0 + texture);
+    defineTexture = (img) => this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, img);
+    defineDummyTexture = () => this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
+    texturePowerOfTwo = () => this.gl.generateMipmap(this.gl.TEXTURE_2D);
+    textureNoPowerOfTwo = () => {
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+    }  
 }
 
 const GLC = new GLCommander();
