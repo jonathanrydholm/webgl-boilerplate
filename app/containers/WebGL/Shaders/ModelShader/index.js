@@ -24,10 +24,15 @@ export default class ModelShader {
         this.positionAttribute = GLC.getAttribLocation(program, Locations.POSITION);
         this.textureCoordsAttribute = GLC.getAttribLocation(program, Locations.TEXTURE_COORDS);
         this.normalAttribute = GLC.getAttribLocation(program, Locations.NORMAL);
+
         this.transformationMatrix = GLC.getUniformLocation(program, Locations.TRANSFORMATION_MATRIX);
+        this.viewMatrix =  GLC.getUniformLocation(program, Locations.VIEW_MATRIX);
+        this.projectionMatrix =  GLC.getUniformLocation(program, Locations.PROJECTION_MATRIX);
+
         this.lightPosition = GLC.getUniformLocation(program, Locations.LIGHT_POSITION);
         this.lightColor = GLC.getUniformLocation(program, Locations.LIGHT_COLOR);
         this.lightAmbient = GLC.getUniformLocation(program, Locations.LIGHT_AMBIENT);
+
         this.diffuseTexture = GLC.getUniformLocation(program, Locations.DIFFUSE_TEXTURE);
         this.hasDiffuseTexture = GLC.getUniformLocation(program, Locations.HAS_DIFFUSE_TEXTURE);
         this.program = program;
@@ -60,6 +65,11 @@ export default class ModelShader {
 
     enableTransformationMatrix = (matrix) => {
         GLC.uploadMatrix4fv(this.transformationMatrix, matrix);
+    }
+
+    enableViewProjectionMatrices = (view, projection) => {
+        GLC.uploadMatrix4fv(this.viewMatrix, view);
+        GLC.uploadMatrix4fv(this.projectionMatrix, projection);
     }
 
     enableLight = (light) => {

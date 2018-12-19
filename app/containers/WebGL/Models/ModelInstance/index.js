@@ -9,6 +9,7 @@ export default class ModelInstance {
         this.ry = ry;
         this.rz = rz;
         this.scale = scale;
+        this.updateTransformationMatrix();
     }
 
     updateRotation = (rx, ry, rz) => {

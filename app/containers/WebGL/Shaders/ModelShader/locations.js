@@ -3,6 +3,8 @@ export default {
     TEXTURE_COORDS: 'textureCoords',
     NORMAL: 'normal',
     TRANSFORMATION_MATRIX: 'transformationMatrix',
+    VIEW_MATRIX: 'viewMatrix',
+    PROJECTION_MATRIX: 'projectionMatrix',
     LIGHT_POSITION: 'lightPosition',
     LIGHT_COLOR: 'lightColor',
     LIGHT_AMBIENT: 'lightAmbient',
